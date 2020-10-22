@@ -14,6 +14,8 @@ function compatibilityCheck () {
     redirectTo('A');
     return false;
   }
+  
+  console.log('is not mobile');
 
   if (isNWClient()) {
     // 本地客户端
@@ -28,10 +30,14 @@ function compatibilityCheck () {
     return false;
   }
 
-  if (hasWebGLContext()) {
+  console.log('is not NWClient');
+
+  
+  // if (hasWebGLContext()) {
+  if (false) {                      // test not have webGL
     // 支持webGL
 
-    if (isIEBrowser) {
+    if (isIEBrowser()) {
 
       redirectTo('D');
       return false;
@@ -40,11 +46,13 @@ function compatibilityCheck () {
     return true;
   }
 
-  if (isWin7Above()) {
+  console.log('no webGL');
+
+  if (isWin7Above(clientInfo)) {
     // win7系统以上
 
     
-    if (isLatestCore()) {
+    if (isLatestCore(clientInfo)) {
       // 当前浏览器是较新的内核版本
       
       redirectTo('B');
@@ -58,7 +66,7 @@ function compatibilityCheck () {
   else {
     // win7系统以下
 
-    if (isLatestChromiumCore()) {
+    if (isLatestChromiumCore(clientInfo)) {
       // 当前浏览器是较新的 谷歌 内核版本
       
       redirectTo('B');
@@ -318,15 +326,23 @@ function hasWebGLContext () {
 
 function isIEBrowser() {
   if((navigator.userAgent.indexOf("MSIE") != -1 ) || (!!document.documentMode == true )) {
+    console.log('is IE Browser');
     return true;
   }
   return false;  
 }
 
 
-function isWin7Above() {
+function isWin7Above(clientInfo) {
   console.log('isWin7Above??.....');
   // todo
+  if (clientInfo.os && clientInfo.os == 'Windows') {
+    if (clientInfo.osVersion) {
+      let currenSystemVersion = clientInfo.osVersion;
+      console.log('current system version: ' + currenSystemVersion); 
+    }
+  }
+  return false;
 }
 
 
@@ -338,9 +354,13 @@ function isLatestCore () {
   return true;
 }
 
-function isLatestChromiumCore () {
+function isLatestChromiumCore (clientInfo) {
   console.log('isLatestChromiumCore??....');
   // todo
+  let currenVersion = Number(clientInfo.browserMajorVersion);
+  console.log(typeof(currentVersion));
+  let leastVersion = 57;
+  return currenVersion >= leastVersion;
 }
 
 
