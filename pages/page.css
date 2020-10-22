@@ -1,0 +1,59 @@
+
+
+.main {
+    margin: auto;
+    margin-top: 200px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    
+}
+
+.NBDesktop {
+    display: inline-block;
+}
+
+.tips {
+    display: inline-block;
+    margin-left: 4rem;
+    align-items: center;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.tips h1 {
+    font-size: 64px;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #333333;
+    line-height: 58px;
+}
+.tips p {
+    font-size: 24px;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #333333;
+    line-height: 22px;
+}
+
+.browsers {
+    margin-top: 60px;
+    display: flex;
+    width: 535px;
+    justify-content: space-between;
+}
+
+.browsers .icons {
+    text-align: center;
+}
+.browsers .icons .browser-name {
+    display: block;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #333333;
+    margin-top: 10px;
+    font-size: 24px;
+}
+
