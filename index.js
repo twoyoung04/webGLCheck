@@ -342,6 +342,10 @@ function isIEBrowser() {
 function isWin7Above(clientInfo) {
   console.log('isWin7Above??.....');
   // todo
+
+  if (clientInfo.os && clientInfo.os.indexOf('Mac OS' != -1)) {
+    return true;
+  }
   if (clientInfo.os && clientInfo.os == 'Windows') {
     if (clientInfo.osVersion) {
       let currenSystemVersion = Number(clientInfo.osVersion);
