@@ -8,6 +8,7 @@ window.addEventListener("load", function() {
 
 function compatibilityCheck () {
   var clientInfo = getClientInfo();
+  console.log('-------------------');
   if (isMobile()) {
     // 移动端
 
@@ -54,11 +55,11 @@ function compatibilityCheck () {
     
     if (isLatestCore(clientInfo)) {
       // 当前浏览器是较新的内核版本
-      
+      console.log('is latest core');
       redirectTo('B');
     }
     else {
-      
+      console.log('is not latest core');
       redirectTo('D');
     }
     return false;
@@ -68,11 +69,11 @@ function compatibilityCheck () {
 
     if (isLatestChromiumCore(clientInfo)) {
       // 当前浏览器是较新的 谷歌 内核版本
-      
+      console.log('is latest chrome core');
       redirectTo('B');
     }
     else {
-      
+      console.log('is not latest chrome core');
       redirectTo('C');
     }
     return false;
@@ -324,6 +325,9 @@ function hasWebGLContext () {
   }
 }
 
+/**
+ * 是否是IE浏览器
+ */
 function isIEBrowser() {
   if((navigator.userAgent.indexOf("MSIE") != -1 ) || (!!document.documentMode == true )) {
     console.log('is IE Browser');
@@ -332,35 +336,54 @@ function isIEBrowser() {
   return false;  
 }
 
-
+/**
+ * 是否是win 7系统以上
+ */
 function isWin7Above(clientInfo) {
   console.log('isWin7Above??.....');
   // todo
   if (clientInfo.os && clientInfo.os == 'Windows') {
     if (clientInfo.osVersion) {
-      let currenSystemVersion = clientInfo.osVersion;
+      let currenSystemVersion = Number(clientInfo.osVersion);
       console.log('current system version: ' + currenSystemVersion); 
+      if (currenSystemVersion == 7 || currenSystemVersion == 8 || currenSystemVersion == 8.1 || currenSystemVersion == 10) {
+        return true;
+      }
     }
   }
   return false;
 }
 
 
-function isLatestCore () {
+function isLatestCore (clientInfo) {
   console.log('islatestCore??.....');
-  let coreList = [];
-  // todo
-
-  return true;
+  let currentBrowser = clientInfo.browser;
+  let currentVersion = Number(clientInfo.browserMajorVersion);
+  switch (currentBrowser) {
+    case 'Chrome':
+      return currentVersion >= 57;
+    case 'Safari':
+      return currentVersion >= 11;
+    case 'FireFox':
+      return currentVersion >= 52;
+    case 'Microsoft Legacy Edge' || 'Microsoft Edge':
+      return currentVersion >= 18;
+  }
+  return false;
 }
 
 function isLatestChromiumCore (clientInfo) {
   console.log('isLatestChromiumCore??....');
-  // todo
-  let currenVersion = Number(clientInfo.browserMajorVersion);
-  console.log(typeof(currentVersion));
-  let leastVersion = 57;
-  return currenVersion >= leastVersion;
+  let currentBrowser = clientInfo.browser;
+  let currentVersion = Number(clientInfo.browserMajorVersion);
+  if (currentBrowser == 'Chrome') {
+    console.log(typeof(currentVersion));
+    console.log(currentVersion);
+    let leastVersion = 57;
+    return currentVersion >= leastVersion;
+  }
+  return false;
+  
 }
 
 
