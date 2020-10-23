@@ -1,12 +1,9 @@
-window.addEventListener("load", function() {
-  var paragraph = document.querySelector("p"),
-    button = document.querySelector("button");
-  // Adding click event handler to button.
 
-  button.addEventListener("click", compatibilityCheck, false);
-}, false);
+const clientInfo = getClientInfo();
 
-function compatibilityCheck () {
+webGLCompatibilityCheck();
+
+function webGLCompatibilityCheck () {
   var clientInfo = getClientInfo();
   console.log('-------------------');
   if (isMobile()) {
@@ -53,13 +50,13 @@ function compatibilityCheck () {
     // win7系统以上
 
     
-    if (isLatestCore(clientInfo)) {
+    if (isRecentCore(clientInfo)) {
       // 当前浏览器是较新的内核版本
-      console.log('is latest core');
+      console.log('is Recent core');
       redirectTo('B');
     }
     else {
-      console.log('is not latest core');
+      console.log('is not Recent core');
       redirectTo('D');
     }
     return false;
@@ -67,13 +64,13 @@ function compatibilityCheck () {
   else {
     // win7系统以下
 
-    if (isLatestChromiumCore(clientInfo)) {
+    if (isRecentChromiumCore(clientInfo)) {
       // 当前浏览器是较新的 谷歌 内核版本
-      console.log('is latest chrome core');
+      console.log('is Recent chrome core');
       redirectTo('B');
     }
     else {
-      console.log('is not latest chrome core');
+      console.log('is not Recent chrome core');
       redirectTo('C');
     }
     return false;
@@ -102,37 +99,44 @@ function getClientInfo () {
   var nVer = navigator.appVersion;
   var nAgt = navigator.userAgent;
   var browser = navigator.appName;
+  var core = browser;
   var version = '' + parseFloat(navigator.appVersion);
   var majorVersion = parseInt(navigator.appVersion, 10);
   var nameOffset, verOffset, ix;
 
-  // Opera
-  if ((verOffset = nAgt.indexOf('Opera')) != -1) {
-      browser = 'Opera';
-      version = nAgt.substring(verOffset + 6);
-      if ((verOffset = nAgt.indexOf('Version')) != -1) {
-          version = nAgt.substring(verOffset + 8);
-      }
-  }
-  // Opera Next
-  if ((verOffset = nAgt.indexOf('OPR')) != -1) {
-      browser = 'Opera';
-      version = nAgt.substring(verOffset + 4);
-  }
+  // // Opera
+  // if ((verOffset = nAgt.indexOf('Opera')) != -1) {
+  //     browser = 'Opera';
+  //     version = nAgt.substring(verOffset + 6);
+  //     if ((verOffset = nAgt.indexOf('Version')) != -1) {
+  //         version = nAgt.substring(verOffset + 8);
+  //     }
+  // }
+  // // Opera Next
+  // if ((verOffset = nAgt.indexOf('OPR')) != -1) {
+  //     browser = 'Opera';
+  //     version = nAgt.substring(verOffset + 4);
+  // }
+
   // Legacy Edge
-  else if ((verOffset = nAgt.indexOf('Edge')) != -1) {
-      browser = 'Microsoft Legacy Edge';
+  if ((verOffset = nAgt.indexOf('Edge')) != -1) {
+      browser = 'LegacyEdge';
       version = nAgt.substring(verOffset + 5);
   } 
   // Edge (Chromium)
   else if ((verOffset = nAgt.indexOf('Edg')) != -1) {
-      browser = 'Microsoft Edge';
+      browser = 'Edge';
       version = nAgt.substring(verOffset + 4);
   }
   // MSIE
   else if ((verOffset = nAgt.indexOf('MSIE')) != -1) {
-      browser = 'Microsoft Internet Explorer';
+      browser = 'MSIE';
       version = nAgt.substring(verOffset + 5);
+  }
+  // MSIE 11+
+  else if (nAgt.indexOf('Trident/') != -1) {
+    browser = 'MSIE11';
+    version = nAgt.substring(nAgt.indexOf('rv:') + 3);
   }
   // Chrome
   else if ((verOffset = nAgt.indexOf('Chrome')) != -1) {
@@ -151,11 +155,6 @@ function getClientInfo () {
   else if ((verOffset = nAgt.indexOf('Firefox')) != -1) {
       browser = 'Firefox';
       version = nAgt.substring(verOffset + 8);
-  }
-  // MSIE 11+
-  else if (nAgt.indexOf('Trident/') != -1) {
-      browser = 'Microsoft Internet Explorer';
-      version = nAgt.substring(nAgt.indexOf('rv:') + 3);
   }
   // Other browsers
   else if ((nameOffset = nAgt.lastIndexOf(' ') + 1) < (verOffset = nAgt.lastIndexOf('/'))) {
@@ -339,7 +338,7 @@ function isIEBrowser() {
 /**
  * 是否是win 7系统以上
  */
-function isWin7Above(clientInfo) {
+function isWin7Above() {
   console.log('isWin7Above??.....');
   // todo
 
@@ -359,25 +358,27 @@ function isWin7Above(clientInfo) {
 }
 
 
-function isLatestCore (clientInfo) {
-  console.log('islatestCore??.....');
+function isRecentCore (browserVersions, url) {
+  console.log('isRecentCore??.....');
   let currentBrowser = clientInfo.browser;
   let currentVersion = Number(clientInfo.browserMajorVersion);
-  switch (currentBrowser) {
-    case 'Chrome':
-      return currentVersion >= 57;
-    case 'Safari':
-      return currentVersion >= 11;
-    case 'FireFox':
-      return currentVersion >= 52;
-    case 'Microsoft Legacy Edge' || 'Microsoft Edge':
-      return currentVersion >= 18;
+  if (currentBrowser == 'Chrome') {
+    return browserVersions.chrome && currentVersion >= Number(browserVersions.chrome);
+  }
+  if (currentBrowser == 'Safari') {
+    return browserVersions.safari && currentVersion >= Number(browserVersions.safari);
+  }
+  if (currentBrowser == 'Firefox') {
+    return browserVersions.firefox && currentVersion >= Number(browserVersions.firefox);
+  }
+  if (currentBrowser == 'Edge') {
+    return browserVersions.edge && currentVersion >= Number(browserVersions.edge);
   }
   return false;
 }
 
-function isLatestChromiumCore (clientInfo) {
-  console.log('isLatestChromiumCore??....');
+function isRecentChromiumCore () {
+  console.log('isRecentChromiumCore??....');
   let currentBrowser = clientInfo.browser;
   let currentVersion = Number(clientInfo.browserMajorVersion);
   if (currentBrowser == 'Chrome') {
