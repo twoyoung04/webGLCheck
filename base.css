@@ -6,4 +6,9 @@ button {
   font-size : inherit;
   margin : auto;
   padding : 0.6em;
+  width: 300px;
+  height: 100px;
+  background-color: #FF8413;
+  border-width: 0ch;
+  border-radius: 30px;
 }

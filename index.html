@@ -3,12 +3,31 @@
 <head>
     <title>webglTest</title>
     <link rel="stylesheet" type="text/css" href="base.css">
-    <script src="index.js"></script>
-    <!-- <script type="text/javascript"></script> -->
+    <script src="check.js"></script>
+
+    <!-- <script type="module">
+        import {compatibilityCheckCommon} from './check.js';
+
+        testDemand = {
+            mobile: false,
+            nwClient: true,
+            webGL: true,
+            browserVersions: {chrome: 57, safari: 20, firefox: 52, edge: 12},
+            url: './'
+        }
+        
+        
+    </script> -->
+    
+    <script>
+        function buttonClick() {
+            console.log('button click');
+        }
+    </script>
 </head>
 <body>
     <p>[ Here would go the result of WebGL feature detection ]</p>
-    <button>test</button>
+    <button onclick="buttonClick()">testdashjfgj</button>
 
     <script>
         // console.log(navigator);
